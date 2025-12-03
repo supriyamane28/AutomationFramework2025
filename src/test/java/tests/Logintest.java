@@ -34,6 +34,29 @@ public class Logintest extends Basetest {
     }
 
 
+    @DataProvider(name="LoginData1")     //this is 2nd method to get data from Dataprovider method
+    public Object[][] getData()
+    {
+        return new Object[][]
+                {
+                        {"user1","pass1"},
+                        {"user2","pass2"},
+                        {"user3","pass3"}
+                };
+
+    }
+    // now you can use .... @Test(dataProvider = "LoginData1") rest of code will be same
+
+    //this is 3nd method to get data from testng1.xml file
+    //if get data from testng1.xml file. so added parameter in that file
+    //here how to use .check below commented code
+    /*
+     @Test
+     @parameters({"username","password"})
+     rest code will same for method => public void testvalidlogin(String username,String password)
+     run the testng1.xml
+     */
+
     @Test(dataProvider = "LoginData")
     public void testvalidlogin(String username,String password)
     {

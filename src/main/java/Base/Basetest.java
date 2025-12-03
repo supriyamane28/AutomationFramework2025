@@ -2,19 +2,55 @@ package Base;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import utils.Log;
 
 public class Basetest {
 
     protected WebDriver driver;
 
+    @Parameters("browser")
     @BeforeMethod
-    public void setUp()
+    public void setUp(String browser)
     {
         Log.info("Starting WebDriver ...");
-        driver=new ChromeDriver();
+        //driver=new ChromeDriver();
+
+        switch (browser.toLowerCase()) {
+
+            case "chrome":
+                Log.info("opening chrome ...");
+                ChromeOptions c1=new ChromeOptions();
+                c1.addArguments("--incognito");
+                driver = new ChromeDriver(c1);
+                break;
+
+            case "firefox":
+                Log.info("opening firefox ...");
+                FirefoxOptions options = new FirefoxOptions();
+                options.addArguments("-private");
+                driver = new FirefoxDriver(options);
+                break;
+
+            case "edge":
+                Log.info("opening edge ...");
+                EdgeOptions option = new EdgeOptions();
+                option.addArguments("-inprivate");
+                driver = new EdgeDriver(option);
+                break;
+
+            default:
+                Log.info("opening chrome due to invalid browser selection...");
+                System.out.println("⚠ Invalid browser, launching Chrome by default!");
+                driver = new ChromeDriver();
+        }
 
         driver.manage().window().maximize();
 

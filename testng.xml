@@ -1,4 +1,7 @@
 <suite name="Loginsuite">
+    <parameter name="browser" value="edge"/>
+
+
     <test name="Logintest">
         <classes>
           <class name="tests.Logintest"/>

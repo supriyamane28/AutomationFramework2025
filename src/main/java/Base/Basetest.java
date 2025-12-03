@@ -9,12 +9,27 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Parameters;
 import utils.Log;
+
+import java.io.File;
 
 public class Basetest {
 
     protected WebDriver driver;
+
+    @BeforeSuite
+    public void cleanAllureReports() {
+        File allureResults = new File("allure-results");
+
+        if (allureResults.exists()) {
+            for (File file : allureResults.listFiles()) {
+                file.delete();
+            }
+            System.out.println("🧹 Old Allure results cleaned!");
+        }
+    }
 
     @Parameters("browser")
     @BeforeMethod

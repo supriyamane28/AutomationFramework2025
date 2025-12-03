@@ -1,5 +1,5 @@
 <suite name="Loginsuite">
-    <parameter name="browser" value="edge"/>
+    <parameter name="browser" value="chrome"/>
 
 
     <test name="Logintest">

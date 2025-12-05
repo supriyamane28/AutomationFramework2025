@@ -20,7 +20,7 @@ public class Logintest extends Basetest {
 
         int rowcount=Excelutils.getRowCount();
 
-        //rowcunt-1 becoz in first row giving label like username and password.so these are not consider as data. [2] becoz we have 2 coloumns data
+        //rowcount-1 becoz in first row giving label like username and password.so these are not consider as data. [2] becoz we have 2 coloumns data
         Object[][] data=new Object[rowcount-1][2]; //check explanation above mentioned
 
         for(int i=1;i<rowcount;i++)
@@ -39,9 +39,9 @@ public class Logintest extends Basetest {
     {
         return new Object[][]
                 {
-                        {"user1","pass1"},
-                        {"user2","pass2"},
-                        {"user3","pass3"}
+                        {"username1","pass1"},
+                        {"username2","pass2"},
+                        {"user3name","pass3"}
                 };
 
     }
@@ -57,7 +57,7 @@ public class Logintest extends Basetest {
      run the testng1.xml
      */
 
-    @Test(dataProvider = "LoginData")
+   @Test(dataProvider = "LoginData")
     public void testvalidlogin(String username,String password)
     {
 
@@ -101,4 +101,64 @@ public class Logintest extends Basetest {
 
 
     }
+
+
+    @Test(dataProvider = "LoginData1")          //this test is created becoz to check screenshot if TC failed
+    public void testinvalidlogin(String username,String password)
+    {
+
+        Log.info("starting login test....");
+
+        Loginpage loginpageobject=new Loginpage(driver);
+
+        Log.info("adding credentials ...");
+
+        /*loginpageobject.enterusername("admin@yourstore.com");
+		loginpageobject.enterpassword("admin");
+		*/
+        // above section commented becoz here we are use test data from excel so added parameter in function like username and password
+
+        loginpageobject.enterusername(username);
+        loginpageobject.enterpassword(password);
+
+
+        loginpageobject.clickonlogin();
+
+        System.out.println(driver.getTitle());
+
+
+        Log.info("verifying page title ...");
+
+        //Assert.assertEquals(driver.getTitle(),"Just a moment...");
+
+        String expected = "Just a moment...";
+        String actual = driver.getTitle();
+
+        if (actual.equals(expected))
+        {
+            Log.info("✔ Test PASSED: Title matched");
+        }
+        /*  commented code due to check test case failed ...and checking screenshot
+        else
+        {
+            Log.error("❌ Test FAILED: Title did NOT match");
+            Log.error("Expected: " + expected);
+            Log.error("Actual:   " + actual);
+
+        }
+
+         */
+    }
+        @Test
+        public void testFail()
+    {
+        driver.get("https://googleee.co...");
+        Assert.fail("Failing intentionally");
+
+
+    }
+
+
+
+
 }

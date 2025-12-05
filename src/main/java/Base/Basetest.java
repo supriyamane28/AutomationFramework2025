@@ -1,5 +1,8 @@
 package Base;
 
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -7,6 +10,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -84,5 +88,28 @@ public class Basetest {
         }
 
 
+    }
+
+
+    public String takeScreenshot(String testName) {
+        File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        String path = System.getProperty("user.dir") + "/screenshots/" + testName + ".png";
+        try {
+            FileUtils.copyFile(src, new File(path));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return path;
+    }
+
+    @AfterMethod
+    public void getResult(ITestResult result) {
+
+        if (result.getStatus() == ITestResult.FAILURE) {
+            System.out.println("Test Failed! Screenshot Captured!");
+            takeScreenshot(result.getName());
+        }
+
+        driver.quit();
     }
 }
